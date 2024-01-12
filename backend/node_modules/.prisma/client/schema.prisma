@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Model: Tabela
+// Rodar: npx prisma migrate --dev
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tarefas{
+  tare_id Int @id @default(autoincrement())
+  tare_titulo String 
+  tare_descricao String
+  tare_data DateTime @default(now())
+  tare_status Status @relation(fields: [tare_stat_nome], references: [stat_nome])
+  tare_stat_nome String
+
+  @@map("TAREFAS")
+}
+
+model Status{
+  stat_nome String 
+  stat_tare Tarefas[]
+
+  @@unique([stat_nome])
+  @@map("STATUS")
+}
+
+
+model Tema{
+  tema_id Int @default(0)
+
+  @@unique([tema_id])
+  @@map("TEMA")
+}
